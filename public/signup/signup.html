@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang= "en">
+<head>
+	<meta charset= "UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-signin-client_id" content="187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com">
+	<title>sign up!</title>
+	<style>
+		h1{text-align: center; background-color: orange; padding: 5px;}
+		div{margin: auto; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);} 
+		input{display: block; padding: 5px; border: none; border-bottom: 4px solid limegreen; width: 25vw; margin-bottom: 5px;} label{padding: 5px;} 
+		#submit{margin-top: 10px; padding: 7px; display: block; width: 100%; background-color: orange; border: none;}
+	</style>
+</head>
+<body>
+	<div>
+		<h1>Signup!</h1>
+		<label>Name</label><input type= "text" id= "Name" name= "Name">
+		<label>Email</label><input type= "email" id= "email" name= "email">
+		<label>Password</label><input type= "password" id= "password" name= "password">
+		<button id= "submit">submit</button>
+		<p>already have an account? click <a href="/login">here</a> to login</p>
+		<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		<a href="https://github.com/login/oauth/authorize?client_id=f6dc434ee0ebe8a16973" >Login with github</a>
+		<a href="#" onclick="signOut();">Sign out</a>
+	</div>
+</body>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+	//ZCoU5pq2PacxdJN
+	function onSignIn(googleUser)
+	{
+		var profile = googleUser.getBasicProfile();
+		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		console.log('Name: ' + profile.getName());
+		console.log('Image URL: ' + profile.getImageUrl());
+		console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://localhost:3000/OAuth/google');
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xhr.onload = function()
+		{
+			console.log(JSON.parse(xhr.responseText));
+			resp_data= JSON.parse(xhr.responseText);
+
+			switch(resp_data.action)
+			{
+				case "create_session" : {
+					localStorage.setItem("NerdTalk_authorization", resp_data.token);
+					window.alert('Signe in complete!');
+					window.location.href= location.origin + '/dashboard';
+					break;
+				}
+				case "redirect" : {
+					window.location.href= location.origin + '/' + resp_data.value;
+					break;
+				}
+				case "invalid" : {
+					window.alert(resp_data.value);
+					break;
+				}
+				case "error" : {
+					window.alert(resp_data.message);
+					window.location.href= location.origin + '/' + resp_data.value;
+					break;
+				}
+			}
+		};
+		xhr.send('idtoken=' + googleUser.getAuthResponse().id_token + '&action=signup');
+	}
+
+	function signOut() 
+	{
+		var auth2 = gapi.auth2.getAuthInstance();
+		auth2.signOut().then(function () {
+		  console.log('User signed out.');
+		});
+	}
+
+//------------------------------------------------------------------------------------
+	document.getElementById("submit").onclick= function(e)
+	{console.log(document.getElementById("password").value);
+		var data= {};
+		data.Name= document.getElementById("Name").value;
+		data.email= document.getElementById("email").value;
+		data.password= document.getElementById("password").value;
+		let settings= 
+		{
+			method: "POST", mode: "cors", cache: "no-cache",
+			headers:{"Content-Type": "application/json; charset=utf-8"},
+			body: JSON.stringify({
+				"name": document.getElementById("Name").value,
+				"email": document.getElementById("email").value,
+				"password": document.getElementById("password").value,
+				"validationType" : "nerdtalk"
+			})
+		};
+		fetch("/signup", settings)
+		.then(response => response.json())
+		.then(resp_data => {
+
+			console.log(resp_data);
+
+			switch(resp_data.action)
+			{
+				case "create_session" : {
+					localStorage.setItem("NerdTalk_authorization", resp_data.token);
+					window.alert('Signe in complete!');
+					window.location.href= location.origin + '/dashboard';
+					break;
+				}
+				case "redirect" : {
+					window.location.href= location.origin + '/' + resp_data.value;
+					break;
+				}
+				case "invalid" : {
+					window.alert(resp_data.value);
+					break;
+				}
+				case "error" : {
+					window.alert(resp_data.message);
+					window.location.href= location.origin + '/' + resp_data.value;
+					break;
+				}
+			}
+		})
+		.catch(error => console.log(error));
+	}
+
+	//window.addEventListener("unload", function(){localStorage.removeItem("authorization:" + window.location.host);});
+
+
+</script>
+</html>

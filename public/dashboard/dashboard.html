@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang= "en">
+<head>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+	<link rel="stylesheet" media="screen and (min-width: 640px)" href="">
+	<link rel="stylesheet" media="screen and (max-width: 425px)" href="">
+	<style type="text/css">
+
+	@media only screen and (max-width: 425px)
+	{
+		#container{max-width: 100vw; margin: auto;}
+		.feed{max-width: 100vw; margin: auto;}
+		.navbar div{width: 100px;}
+	}
+
+	@media only screen and (min-width: 640px)
+	{
+		#container{max-width: 640px; margin: auto;}
+		.navbar div{width: max-content;}
+	}
+
+		body{background-color: #707479; }
+		#container{margin: auto;}
+		.rich-text{margin: auto; background-color: #353435; border-radius: 10px;}
+		.rich-text textarea{width: -webkit-fill-available; height: 75px; border: none; padding: 5px 10px; font-family: arial; resize: none; outline: none; border-bottom: 4px solid lime; background-color: aliceblue; margin: 5px; }
+		.avatar {display: inline-block; border-radius: 50%; margin: 5px;}
+		.actor{display: inline-block; margin-left: 50px; color: white;}
+		.user{display: flex;}
+		#create-post{border: none; padding: 10px 20px; margin: 5px; border-radius: 5px;}
+		.navbar{display: flex; justify-content: center; margin-bottom: 20px; background-color: #353435; border-radius: 10px;  border-bottom: 4px solid lime;}
+		.navbar div{margin: 10px; background-color: white; padding: 10px 5px; text-align: center; border-radius: 5px;}
+		.navbar input{margin: 10px; border-radius: 30px; border: none;}
+
+		.feed p{background-color: white; border-bottom: 4px solid lime; margin: 5px;}
+		.feed {margin: auto; background-color: #353435; border-radius: 10px; margin: 10px 0px; padding-bottom: 5px;}
+
+	</style>
+</head>
+<body>
+	<div id= "container">
+		<nav class= "navbar">
+			<div style="flex-grow: 2">item 1</div>
+			<div style="flex-grow: 2">item 2</div>
+			<input style="flex-grow: 6" type= "text" placeholder= " search" id= "search-bar" />
+		</nav>
+
+		<section class= "rich-text">
+			<div class= "user">
+				<img src=" " id= "avatar" class= "avatar" width= "75px" height= "75px" />
+				<h3 id= "actor" class= "actor">your name here</h3>
+			</div>
+			<textarea placeholder="say something" id= "text-box"></textarea>
+			<button id= "create-post">Post</button>
+		</section>
+	</div>
+
+	<div id= "feed-tempate" class= "feed" hidden>
+		<div class= "user">
+			<img src=" " class= "avatar" width="60px" height="60px">
+			<h3 class= "actor"></h3>
+		</div>
+			<p class= "description" style= "white-space: pre-wrap;"></p>
+	</div>
+</body>
+<script>
+
+	document.getElementById("create-post").onclick= function(event)
+	{
+		let feed= document.getElementById("feed-tempate").cloneNode(true);
+		feed.removeAttribute("id");
+		feed.removeAttribute("hidden");
+		feed.querySelector("img").setAttribute("src", document.getElementById("avatar").getAttribute("src"));
+		feed.querySelector("h3").innerHTML= document.getElementById("actor").innerHTML;
+		feed.querySelector("p").innerHTML= document.getElementById("text-box").value;
+		document.getElementById("container").appendChild(feed);
+	}
+
+	let token= localStorage.getItem("NerdTalk_authorization");
+
+	let settings= 
+	{
+		method: "POST", mode: "cors", cache: "no-cache",
+		headers:{"Content-Type": "application/json; charset=utf-8"},
+		body: JSON.stringify({"token" : token})
+	};
+	fetch("/token/validate", settings)
+	.then( data => data.json())
+	.then((result) => {
+		console.log(result);
+		if(result.action == "validated")
+		{
+			document.getElementById("avatar").src= result.value.image;
+			document.getElementById("actor").innerHTML= result.value.name;
+		}
+		else
+			console.log(result.message);
+	})
+
+</script>
+</html>
