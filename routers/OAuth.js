@@ -3,7 +3,6 @@ const path= require('path');
 const bodyParser= require('body-parser');
 const https = require('https');
 const http = require('http');
-const superagent = require('superagent');
 const qs = require('querystring');
 const utility= require(path.join(__dirname, '../lib/utility-functions.js'));
 

@@ -45,7 +45,7 @@ router.post('/', JSON_parser, function(request, response)
 	token_data.email= request.body.email;
 	token_data.validationType= request.body.validationType;
 	token_data.token= token;
-	token_data.validity= Date.now() + (1000 * 60 * 10);//token validity is upto 10 minutes from creation
+	token_data.validity= Date.now() + (1000 * 60 * 30);//token validity is upto 10 minutes from creation
 
 	database.create(path.join(__dirname, "../data/tokens/" + token + ".json"), JSON.stringify(token_data), function(err)
 	{//save token and validity information in a database file

@@ -32,6 +32,9 @@ app.use('/test', file_test);
 var dashboard_handler= require('./routers/dashboard.js');
 app.use('/dashboard', dashboard_handler);
 
+var getstream_handler= require('./routers/getstream.js');
+app.use('/getstream', getstream_handler);
+
 app.get('*', (request, response) => response.send('whoops'));
 app.get('/favicon.ico', (request, response) => response.send('#'));
 

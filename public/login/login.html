@@ -4,13 +4,7 @@
 	<meta charset= "UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="google-signin-client_id" content="187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com">
 	<title>Login</title>
-	<style>
-		h1{text-align: center; background-color: orange; padding: 5px;}
-		div{margin: auto; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);} 
-		input{display: block; padding: 5px; border: none; border-bottom: 4px solid limegreen; width: 95%; margin-bottom: 5px;} label{padding: 5px;} 
-		button{font-weight: bold; margin: 10px 0px 10px 0px; padding: 7px; display: block; width: 100%; background-color: orange; border: none;}
-		a{text-decoration: none; color: darkviolet;}
-	</style>
+	<link rel="stylesheet" href= "./login.css">
 </head>
 <body>
 	<div id= "login">
@@ -21,112 +15,10 @@
 		<a id= "resetPassword" >forgot password?</a>
 		<p>Don't have an account? click <a href="/signup">here</a> to signup</p>
 		<div class="g-signin2" data-onsuccess="onSignIn"></div>
-		<a href="https://github.com/login/oauth/authorize?client_id=f6dc434ee0ebe8a16973&redirect_uri=http://localhost:3000/OAuth/github/login" >Login with github</a>
-		<a href="#" onclick="signOut();">Sign out</a>
+		<a class ="github-oauth" href="https://github.com/login/oauth/authorize?client_id=f6dc434ee0ebe8a16973&redirect_uri=http://localhost:3000/OAuth/github/login" >Login with github</a>
+		<!-- <a href="#" onclick="signOut();">Sign out</a> -->
 	</div>
 </body>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script type="text/javascript">
-
-	//ZCoU5pq2PacxdJN
-	function onSignIn(googleUser)
-	{
-		var profile = googleUser.getBasicProfile();
-		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		console.log('Name: ' + profile.getName());
-		console.log('Image URL: ' + profile.getImageUrl());
-		console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', 'http://localhost:3000/OAuth/google');
-		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xhr.onload = function()
-		{
-
-			console.log(JSON.parse(xhr.responseText));
-			resp_data= JSON.parse(xhr.responseText);
-
-			switch(resp_data.action)
-			{
-				case "create_session" : {
-					localStorage.setItem("NerdTalk_authorization", resp_data.token);
-					window.alert('login in complete!');
-					window.location.href= location.origin + '/dashboard';
-					break;
-				}
-				case "redirect" : {
-					window.location.href= location.origin + '/' + resp_data.value;
-					break;
-				}
-				case "invalid" : {
-					window.alert(resp_data.value);
-					break;
-				}
-				case "error" : {
-					window.alert(resp_data.message);
-					window.location.href= location.origin + '/' + resp_data.value;
-					break;
-				}
-			}
-			
-		};
-		xhr.send('idtoken=' + googleUser.getAuthResponse().id_token + '&action=login');
-	}
-
-	function signOut() 
-	{
-		var auth2 = gapi.auth2.getAuthInstance();
-		auth2.signOut().then(function () {
-		  console.log('User signed out.');
-		});
-	}
-
-//------------------------------------------------------------------------
-
-	document.getElementById("login_submit").onclick= function(e)
-	{
-		let settings= 
-		{
-			method: "POST", mode: "cors", cache: "no-cache",
-			headers:{"Content-Type": "application/json; charset=utf-8"},
-			body: JSON.stringify({"email" : document.getElementById("email").value, 
-				"password": document.getElementById("password").value,
-				"validationType" : "nerdtalk"
-			})
-		};
-		fetch("/login", settings)
-		.then(response => response.json())
-		.then(resp_data => {
-
-			console.log(resp_data);
-
-			switch(resp_data.action)
-			{
-				case "create_session" : {
-					localStorage.setItem("NerdTalk_authorization", resp_data.token);
-					window.alert('login in complete!');
-					window.location.href= location.origin + '/dashboard';
-					break;
-				}
-				case "redirect" : {
-					window.location.href= location.origin + '/' + resp_data.value;
-					break;
-				}
-				case "invalid" : {
-					window.alert(resp_data.value);
-					break;
-				}
-				case "error" : {
-					window.alert(resp_data.message);
-					window.location.href= location.origin + '/' + resp_data.value;
-					break;
-				}
-			}
-		})
-		.catch(error => console.log(error));
-	}
-
-	//window.addEventListener("unload", function(){localStorage.removeItem("authorization:" + window.location.host);});
-	
-</script>
+<script type="text/javascript" src= "./login.js"></script>
 </html>
