@@ -26,9 +26,6 @@ app.use('/OAuth', OAuth_handler);
 var tokens_handler= require('./routers/token.js');
 app.use('/token', tokens_handler);
 
-var file_test= require('./routers/datatest.js');
-app.use('/test', file_test);
-
 var dashboard_handler= require('./routers/dashboard.js');
 app.use('/dashboard', dashboard_handler);
 

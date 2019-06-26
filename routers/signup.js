@@ -27,7 +27,7 @@ router.post('/', JSON_parser, function(request, response)
 		method: 'POST',
 		headers: { 'Content-Type': "application/json"}
 	}
-
+	//get stream token for user
 	utility.create_HTTP_request(post_options, (err, streamuser) =>{
 		if(err || streamuser === undefined)
 		{
@@ -36,7 +36,7 @@ router.post('/', JSON_parser, function(request, response)
 					: JSON.stringify({"action" : "error", "value" : '/signup', "message" : "unable to create user. Please sign in again"}));
 		}
 		else
-		{
+		{//store user data on to database depending on authentication type and redirect to dashboard
 			let user_data= {};
 			if(request.body.validationType === "google")
 			{

@@ -16,12 +16,12 @@ var JSON_parser= bodyParser.json();
 router.get('/', (request, response) => response.sendFile(path.join(__dirname, '../public/login/login.html')));
 
 router.post('/', JSON_parser, function(request, response)
-{
+{//check if user file exists. if so read its contents
 	database.read(path.join(__dirname, "../data/" + request.body.validationType + '/' + request.body.email + ".json"), (err, user_info) => {
 		if(err)
 		{	
 			if(err.errno == -4058)
-			{
+			{//if file doesnt exist.  rediret to signe in page
 				response.send(request.body.validationType === "github" ? '<script>window.alert("user does not exist. please sign up"); window.location.href= location.origin + "/signup";</script>'
 				: JSON.stringify({"action" : "error", "value" : 'signup', "message" : "user does not exist. please sign up"}));
 			}
@@ -32,10 +32,10 @@ router.post('/', JSON_parser, function(request, response)
 			} 
 		}
 		else
-		{
+		{//user data sucessfully retreved
 			user_info= JSON.parse(user_info);
 			let token= utility.manage_tokens('POST', '/token', result => {
-				
+				//send user data based on authenticatcion type
 				result= JSON.parse(result);
 				if(result.action == 'authenticate')
 				{

@@ -5,10 +5,10 @@ const https = require('https');
 const http = require('http');
 const qs = require('querystring');
 const utility= require(path.join(__dirname, '../lib/utility-functions.js'));
-
+//gogle oauth client keys
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client('187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com');
-
+//github client keys
 const clientID = 'f6dc434ee0ebe8a16973'
 const clientSecret = '29aa31a9e1f5bed6e6788a63824afd5f4b2d62c3'
 
@@ -17,10 +17,10 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var JSON_parser= bodyParser.json();
 
 router.get('/github', urlencodedParser, function(request, response)
-{
+{//get oauth code from url and post to github in exchange for token
 	var post_data = qs.stringify({ 
-		client_id: 'f6dc434ee0ebe8a16973', 
-		client_secret: '29aa31a9e1f5bed6e6788a63824afd5f4b2d62c3', 
+		client_id: clientID, 
+		client_secret: clientSecret, 
 		code: request.query.code,
 		scope: 'user:email'
 	});
@@ -43,7 +43,7 @@ router.get('/github', urlencodedParser, function(request, response)
 		        headers: {'Authorization' : 'token ' + JSON.parse(chunk).access_token, 'User-Agent': 'Mozilla/5.0'}
 		    };
 			utility.create_HTTPS_request(get_options, (err, userdata) => {
-				userdata= JSON.parse(userdata)
+				userdata= JSON.parse(userdata)//if valid tiken received send to sign up page to finish sign up
 				if(userdata.email === null || userdata.email === undefined)
 					response.send(userdata);
 				else

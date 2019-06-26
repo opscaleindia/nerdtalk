@@ -10,7 +10,7 @@ var database= new databaseSystem();
 var JSON_parser= bodyParser.json();
 
 router.post('/validate', JSON_parser, function(request, response)
-{
+{//check if a token is expired or not
 	database.read(path.join(__dirname, "../data/tokens/" + request.body.token + ".json"), (err, token_data) =>
 	{
 		if(err)
@@ -39,7 +39,7 @@ router.post('/validate', JSON_parser, function(request, response)
 });
 
 router.post('/', JSON_parser, function(request, response)
-{
+{//generate a new token
 	let token= utility.create_token();
 	var token_data= {};
 	token_data.email= request.body.email;
@@ -56,7 +56,7 @@ router.post('/', JSON_parser, function(request, response)
 
 router.put('/', JSON_parser, function(request, response)
 {
-
+	//extend token validity by 30 minutes
 	database.read(path.join(__dirname, "../data/tokens/" + request.body.token + ".json"), (err, token_data) =>
 	{
 		if(err)
@@ -67,7 +67,7 @@ router.put('/', JSON_parser, function(request, response)
 		else
 		{
 			token_data= JSON.stringify(token_data);
-			token_data.validity= token_data.validity + (1000 * 60 * 10);
+			token_data.validity= token_data.validity + (1000 * 60 * 30);
 			database.update(path.join(__dirname, "../data/tokens/" + request.body.token + ".json"), JSON.stringify(token_data), function(err)
 			{//tokens validity is increased by 10 minutes from now
 				if(err)
