@@ -7,10 +7,10 @@ const qs = require('querystring');
 const utility= require(path.join(__dirname, '../lib/utility-functions.js'));
 //gogle oauth client keys
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client('187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com');
+const client = new OAuth2Client('187100638059-i8sfv7ur5qt13h8pf66rqg85g22a3rp6.apps.googleusercontent.com');
 //github client keys
-const clientID = 'f6dc434ee0ebe8a16973'
-const clientSecret = '29aa31a9e1f5bed6e6788a63824afd5f4b2d62c3'
+const clientID = '87ca1df8078cdd9c629a'
+const clientSecret = 'ce04f39d0a094bc2ce312f9dbac1d53cb1304f64'
 
 var router = express.Router();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -86,7 +86,7 @@ router.post('/google', urlencodedParser, function(request, response)
 	{
 		const ticket = await client.verifyIdToken({
 			idToken: request.body.idtoken, 
-			audience: '187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com',  
+			audience: '187100638059-i8sfv7ur5qt13h8pf66rqg85g22a3rp6.apps.googleusercontent.com',  
 			// Specify the CLIENT_ID of the app that accesses the backend
 		});
 		const payload = ticket.getPayload();

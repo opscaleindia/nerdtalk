@@ -119,7 +119,7 @@ let initilze= function()
 				userName= result.value.name;
 				document.getElementById("avatar").src= result.value.image;
 				document.getElementById("actor").innerHTML= result.value.name;
-				client = stream.connect('zkx3smx8spd3', streamToken,  '54318');
+				client = stream.connect('sw7dxzyqbxyw', streamToken,  '54189');
 				updateFeed();
 			})
 			.catch(err => console.log(err));
