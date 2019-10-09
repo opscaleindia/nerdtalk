@@ -10,7 +10,7 @@ var router = express.Router();
 var database= new databaseSystem();
 var JSON_parser= bodyParser.json();
 //initilize client
-client = stream.connect('sw7dxzyqbxyw', 'c8vwm4d5fwecw2cfhfecs8t5zagknzuj7fmvqmvfupy8pbzazc3wbxxpfbwabyy4', '54189');
+client = stream.connect('xxxxxxx', 'xxxxxxxxxxxxxx', '54189');
 
 router.post('/token', JSON_parser, (request, response) => {
 	console.log(request.body);//generate a user token
