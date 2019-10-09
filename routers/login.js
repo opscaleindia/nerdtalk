@@ -3,7 +3,7 @@ const path= require('path');
 const bodyParser= require('body-parser');
 const https = require('https');
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client('187100638059-bmdb2o84d54j32lqmn1r4kh3prg48s5e.apps.googleusercontent.com');
+const client = new OAuth2Client('xxxxx-xxxxxxxxxx.apps.googleusercontent.com');
 
 const databaseSystem= require(path.join(__dirname, '../lib/data.js'));
 const utility= require(path.join(__dirname, '../lib/utility-functions.js'));
