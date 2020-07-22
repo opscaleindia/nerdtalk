@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang= "en">
+<head>
+	<meta charset= "UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-signin-client_id" content="187100638059-i8sfv7ur5qt13h8pf66rqg85g22a3rp6.apps.googleusercontent.com">
+	<title>Login</title>
+	<link rel="stylesheet" href= "./login.css">
+</head>
+<body>
+	<div id= "login">
+		<h1>Login!</h1>
+		<label>Email</label><input type= "email" id= "email" name= "email">
+		<label>Password</label><input type= "password" id= "password" name= "password">
+		<button id= "login_submit">submit</button>
+		<a id= "resetPassword" >forgot password?</a>
+		<p>Don't have an account? click <a href="/signup">here</a> to signup</p>
+		<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		<a class ="github-oauth" href="https://github.com/login/oauth/authorize?client_id=87ca1df8078cdd9c629a&redirect_uri=http://localhost:3000/OAuth/github/login" >Login with github</a>
+		<!-- <a href="#" onclick="signOut();">Sign out</a> -->
+	</div>
+</body>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript" src= "./login.js"></script>
+</html>

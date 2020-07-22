@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang= "en">
+<head>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href= "./dashboard.css">
+</head>
+<body>
+	<div id= "container">
+		<nav class= "navbar">
+			<div style="flex-grow: 2" onclick= "updateFeed()">Timeline</div>
+			<div style="flex-grow: 2" onclick= "home()">Home</div>
+			<input style="flex-grow: 6" type= "text" placeholder= " search" id= "search-bar" />
+		</nav>
+
+		<section class= "rich-text">
+			<div class= "user">
+				<img src=" " id= "avatar" class= "avatar" width= "75px" height= "75px" />
+				<h3 id= "actor" class= "actor">your name here</h3>
+			</div>
+			<textarea placeholder="say something" id= "text-box"></textarea>
+			<button id= "create-post">Post</button>
+		</section>
+	</div>
+
+	<div id= "feed-tempate" hidden>
+		<div class= "user">
+			<img src=" " class= "avatar" width="60px" height="60px">
+			<h3 class= "actor"></h3>
+		</div>
+		<p class= "description" ></p>
+		<button class= "upvote" onclick= "upvote(this)">Upvote</button>
+		<button class= "comment" onclick= "comment(this)">Comment</button>
+		<div class= "comments-container">
+			<textarea placeholder="comment" hidden></textarea>
+			<button class= "submit-comment" onclick= "submit_comment(this)" hidden >Submit</button>
+		</div>
+	</div>
+</body>
+ <script src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+<script type="text/javascript" src= "./dashboard.js"></script>
+</html>
